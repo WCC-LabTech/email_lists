@@ -51,7 +51,7 @@ def send_email(request):
     body = request.POST['body']
 
     # Set MIME types
-    part = MIMEText(text, 'plain')
+    part = MIMEText(body, 'plain')
     msg.attach(part)
     try:
         server = smtplib.SMTP('smtp.wccnet.edu', 25)
