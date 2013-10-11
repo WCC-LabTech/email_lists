@@ -38,9 +38,10 @@ def display_users(request, pk):
         return HttpResponse(status=400)
     
 @csrf_exempt
-def send_email(request, pk):
+def send_email(request):
     sender_email = request.user.email
-    to_emails = [x.email for x in Group.objects.get(pk=pk).user_set.all()]
+    to_emails = [x.email for x in 
+                    Group.objects.get(pk=request.POST['group']).user_set.all()]
 
     # Set up message
     msg = MIMEMultipart('alternative')
