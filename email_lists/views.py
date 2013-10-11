@@ -43,23 +43,24 @@ def send_email(request):
     to_emails = [x.email for x in 
                     Group.objects.get(pk=request.POST['group']).user_set.all()]
 
-    # Set up message
-    msg = MIMEMultipart('alternative')
-    msg['Subject'] = request.POST['subject']
-    msg['From'] = sender_email
-    msg['To'] = to_emails
-    body = request.POST['body']
+    for email in to_emails:
+        # Set up message
+        msg = MIMEMultipart('alternative')
+        msg['Subject'] = request.POST['subject']
+        msg['From'] = sender_email
+        msg['To'] = email
+        body = request.POST['body']
 
-    # Set MIME types
-    part = MIMEText(body, 'plain')
-    msg.attach(part)
-    try:
-        for email in to_emails:
-            server = smtplib.SMTP('smtp.wccnet.edu', 25)
-            server.sendmail(sender_email, email, msg.as_string())
-        server.quit()
-    except:
-        data = simplejson.dumps({'message': 'Could not send email'})
-        return HttpResponse(data, status=400)
+        # Set MIME types
+        part = MIMEText(body, 'plain')
+        msg.attach(part)
+        try:
+            for email in to_emails:
+                server = smtplib.SMTP('smtp.wccnet.edu', 25)
+                server.sendmail(sender_email, email, msg.as_string())
+            server.quit()
+        except:
+            data = simplejson.dumps({'message': 'Could not send email'})
+            return HttpResponse(data, status=400)
     data = simplejson.dumps({'message': ''})
     return HttpResponse(data, status=200, mimetype='application/json') 
