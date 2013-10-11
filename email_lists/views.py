@@ -11,6 +11,16 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 
+def list_groups(request):
+    try:
+        data = simplejson.dumps({'groups':
+                                    [model_to_dict(x) 
+                                    for x in Groups.objects.all()]
+        })
+        return HttpResponse(data)
+    except:
+        return HttpResponse(status=400)
+
 def display_users(request, pk):
     try:
         users = Groups.objects.get(pk=pk).user_set.all()
