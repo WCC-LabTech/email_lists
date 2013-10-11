@@ -11,6 +11,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 
+@crsf_exempt
 def list_groups(request):
     try:
         data = simplejson.dumps({'groups':
@@ -21,6 +22,7 @@ def list_groups(request):
     except:
         return HttpResponse(status=400)
 
+@crsf_exempt
 def display_users(request, pk):
     try:
         users = Group.objects.get(pk=pk).user_set.all()
@@ -35,6 +37,7 @@ def display_users(request, pk):
     except:
         return HttpResponse(status=400)
     
+@crsf_exempt
 def send_email(request, pk):
     sender_email = request.user.email
     to_emails = [x.email for x in Group.objects.get(pk=pk).user_set.all()]
