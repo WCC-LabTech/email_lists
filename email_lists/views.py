@@ -54,8 +54,9 @@ def send_email(request):
     part = MIMEText(body, 'plain')
     msg.attach(part)
     try:
-        server = smtplib.SMTP('smtp.wccnet.edu', 25)
-        server.sendmail(sender_email, to_emails, msg.as_string())
+        for email in to_emails:
+            server = smtplib.SMTP('smtp.wccnet.edu', 25)
+            server.sendmail(sender_email, email, msg.as_string())
         server.quit()
     except:
         data = simplejson.dumps({'message': 'Could not send email'})
