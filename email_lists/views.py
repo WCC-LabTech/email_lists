@@ -45,7 +45,7 @@ def send_email(request):
 
     # Set up message
     msg = MIMEMultipart('alternative')
-    msg['Subject'] = request.POST['Subject']
+    msg['Subject'] = request.POST['subject']
     msg['From'] = sender_email
     msg['To'] = to_emails
     body = request.POST['body']
